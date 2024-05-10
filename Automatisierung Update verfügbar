@@ -1,0 +1,29 @@
+alias: Updates verfügbar
+description: HA, HA Addons, HACS Updates verfügbar
+trigger:
+  - platform: state
+    entity_id:
+      - sensor.update_verfuegbar
+    attribute: anzahl
+condition:
+  - condition: numeric_state
+    entity_id: sensor.update_verfuegbar
+    above: 0
+    attribute: anzahl
+    value_template: "{{ trigger.to_state.state > trigger.from_state.state }}"
+action:
+  - service: telegram_bot.send_message
+    data:
+      message: >-
+        Folgende Updates sind verfügbar:  {{ states("sensor.update_verfuegbar")
+        }}
+  - service: notify.alexa_media
+    data:
+      message: >-
+        Folgende Updates sind verfügbar:  {{ states("sensor.update_verfuegbar")
+        }}
+      target: media_player.johns_echo_dot
+      data:
+        type: announce
+        methoad: all
+mode: single
