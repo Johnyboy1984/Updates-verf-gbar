@@ -1,0 +1,15 @@
+template:
+  - sensor:
+      - name: "Update verfuegbar"
+        unique_id: update_verfuegbar
+        state: > 
+          {%-  for state in states.update |list 
+                    if state.state == "on" 
+                    and device_id(state.entity_id) is not none 
+          -%}
+          {{ state.name }}{%- if not loop.last %},
+          {% endif -%}
+          {% endfor %}
+        attributes:
+          anzahl: >
+            {{ states.update | selectattr('entity_id', 'is_state', 'on') | map(attribute='entity_id') | list | count }}
