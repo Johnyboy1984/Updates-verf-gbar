@@ -1,2 +1,2 @@
-# Updates-verf-gbar
+# Updates-verfuegbar
 Home Assistant - Update verfügbar
